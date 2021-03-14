@@ -1,1 +1,1 @@
-# AI-Project
+# Smart Soduko
