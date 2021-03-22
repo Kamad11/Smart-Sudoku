@@ -7,7 +7,7 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # choosing image to be solved
-num = int(input("Enter image (1-6): "))
+num = int(input("Enter image (1-4): "))
 pathImage = f"Resources/{num}.jpg"
 heightImg = 450
 widthImg = 450
