@@ -131,11 +131,7 @@ class Ui_MainWindow(object):
         the_game = False
 
         if game == 'realTime':
-            realTime = QtWidgets.QWidget()
-            ui = Ui_RealTime()
-            ui.setupUi(realTime)
-
-            the_game = realTime
+            the_game = Ui_RealTime()
 
         elif game == 'upload':
             upload = QtWidgets.QWidget()
