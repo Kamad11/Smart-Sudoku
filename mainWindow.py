@@ -101,7 +101,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Smart Sudoku"))
         self.label.setText(_translate("MainWindow", "SMART SUDOKU"))
         # buttons
         # ## real time

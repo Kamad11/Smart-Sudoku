@@ -13,6 +13,29 @@ board = [
     [0, 4, 9, 2, 0, 6, 0, 0, 7]
 ]
 """
+import random
+
+
+def make_sudoku(board):
+    """Function to generate random solavable sudoku board.
+
+    Args:
+        board (list): the game board.
+
+    Returns:
+        board: A randomly generated solvable board.
+    """
+    for i in range(25):
+        row = random.randrange(9)
+        col = random.randrange(9)
+        num = random.randrange(1, 10)
+        # if taken or not valid reroll
+        while(not valid(board, num, (row, col)) or board[row][col] != 0):
+            row = random.randrange(9)
+            col = random.randrange(9)
+            num = random.randrange(1, 10)
+        board[row][col] = num
+    return board
 
 
 def solve(board):
