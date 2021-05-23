@@ -9,10 +9,10 @@ import realtime_sol as sol
 
 class Thread(QThread):
     changePixmap = pyqtSignal(QImage)
-    finalPixmap = pyqtSignal(QImage)
 
     def run(self):
-        global running
+        global camera
+        camera = True
 
         model = intialize_predection_model("Resources/digit_model.h5")
         margin = 4
@@ -22,7 +22,7 @@ class Thread(QThread):
         count = 0
 
         cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-        while running:
+        while camera:
             ret, frame = cap.read()
             if ret:
                 # image preprocessing
@@ -92,7 +92,6 @@ class Thread(QThread):
                         3,
                     )
 
-                    # cv2.imshow("hehe", grid)
                     if flag == 0:
                         grid_text = []
                         for y in range(9):
@@ -147,9 +146,9 @@ class Thread(QThread):
                             "uint8"
                         )
                         dst = cv2.add(img1_bg, img2_fg)
-                        print("count", count)
-                        if count >= 3:
-                            running = False
+                        if count == 3:
+                            camera = False
+                            cv2.imwrite("result.jpg", dst)
                             self.show_frame(dst)
 
                     else:
@@ -159,21 +158,23 @@ class Thread(QThread):
                     flag = 0
                     self.show_frame(frame)
 
-    def show_frame(self, frame):
+        cap.release()
+        cv2.destroyAllWindows()
+
+    def show_frame(self, frame):        
         rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         h, w, ch = rgbImage.shape
         bytesPerLine = ch * w
         QtFormat = QImage(
             rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888
         )
-        if running:
-            self.changePixmap.emit(QtFormat)
-        else:
-            self.finalPixmap.emit(QtFormat)
+        self.changePixmap.emit(QtFormat)
+
 
 class Ui_RealTime(QtWidgets.QWidget):
     def __init__(self, is_on):
         super().__init__()
+        [...]
 
         global running
         running = is_on
@@ -181,7 +182,12 @@ class Ui_RealTime(QtWidgets.QWidget):
 
     @pyqtSlot(QImage)
     def setImage(self, image):
+        global running
+
         self.feed.setPixmap(QPixmap.fromImage(image))
+        if not camera:
+            self.th.quit()
+            running = False
 
     def initUI(self):
         self.resize(700, 700)
@@ -197,7 +203,6 @@ class Ui_RealTime(QtWidgets.QWidget):
         self.gridLayout.addWidget(self.feed, 0, 0, 1, 1)
         
         if running:
-            th = Thread(self)
-            th.changePixmap.connect(self.setImage)
-            th.finalPixmap.connect(self.setImage)
-            th.start()
+            self.th = Thread(self)
+            self.th.changePixmap.connect(self.setImage)
+            self.th.start()
