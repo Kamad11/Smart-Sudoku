@@ -1,12 +1,13 @@
+"""Main Gui window."""
 import os
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from utils import intialize_predection_model
-from instructions import Ui_Instructions
-from about import Ui_About
-from upload import Ui_UploadImage
-from realTime import Ui_RealTime
-from randomGenerator import Ui_RandomGenerator
+from instructions import Ui_Instructions          # instructions
+from about import Ui_About                        # about
+from realTime import Ui_RealTime                  # real time mode
+from upload import Ui_UploadImage                 # upload image mode
+from randomGenerator import Ui_RandomGenerator    # random generator mode
 
 style_sheet = """QPushButton { background-color: #F76B8A;
                                color: #000000;

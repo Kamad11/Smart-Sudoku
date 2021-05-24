@@ -1,3 +1,4 @@
+"""About the authors of the project."""
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 ik_text = """<h2>Ishani Kathuria</h2>
@@ -18,7 +19,7 @@ class Ui_About(object):
                                font: 12pt \"Consolas\";""")
         self.main_layout = QtWidgets.QGridLayout(About)
         self.main_layout.setObjectName("main_layout")
-        
+
         self.logo = QtWidgets.QLabel(About)
         self.logo.setMinimumSize(QtCore.QSize(300, 300))
         self.logo.setPixmap(QtGui.QPixmap("Resources\logo_transparent.png"))
@@ -31,7 +32,7 @@ class Ui_About(object):
         self.authors.setAlignment(QtCore.Qt.AlignCenter)
         self.authors.setObjectName("authors")
         self.main_layout.addWidget(self.authors, 1, 1, 1, 1)
-        
+
         self.IK = QtWidgets.QLabel(About)
         self.IK.setMinimumSize(QtCore.QSize(210, 210))
         self.IK.setAlignment(QtCore.Qt.AlignCenter)

@@ -1,3 +1,4 @@
+"""Module containing real-time mode gui."""
 import cv2
 import numpy as np
 import operator
@@ -6,6 +7,7 @@ from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QImage, QPixmap
 from utils import intialize_predection_model
 import realtime_sol as sol
+
 
 class Thread(QThread):
     changePixmap = pyqtSignal(QImage)
@@ -77,11 +79,13 @@ class Thread(QThread):
                                 [points[1], points[0], points[2], points[3]]
                             )
                     pts2 = np.float32(
-                        [[0, 0], [grid_size, 0], [0, grid_size], [grid_size, grid_size]]
+                        [[0, 0], [grid_size, 0], [0, grid_size],
+                            [grid_size, grid_size]]
                     )
 
                     M = cv2.getPerspectiveTransform(pts1, pts2)
-                    grid = cv2.warpPerspective(frame, M, (grid_size, grid_size))
+                    grid = cv2.warpPerspective(
+                        frame, M, (grid_size, grid_size))
                     grid = cv2.cvtColor(grid, cv2.COLOR_BGR2GRAY)
                     grid = cv2.adaptiveThreshold(
                         grid,
@@ -92,10 +96,11 @@ class Thread(QThread):
                         3,
                     )
 
+                    # finding result
                     if flag == 0:
                         grid_text = []
                         for y in range(9):
-                            ligne = ""
+                            row = ""
                             for x in range(9):
                                 y2min = y * box + margin
                                 y2max = (y + 1) * box - margin
@@ -106,23 +111,24 @@ class Thread(QThread):
                                 x = img.reshape(1, 28, 28, 1)
                                 if x.sum() > 10000:
                                     prediction = model.predict_classes(x)
-                                    ligne += "{:d}".format(prediction[0])
+                                    row += "{:d}".format(prediction[0])
                                 else:
-                                    ligne += "{:d}".format(0)
-                            grid_text.append(ligne)
+                                    row += "{:d}".format(0)
+                            grid_text.append(row)
                         result = sol.sudoku(grid_text)
 
+                    # setting result
                     if result is not None:
                         count += 1
                         flag = 1
-                        fond = np.zeros(
+                        bg = np.zeros(
                             shape=(grid_size, grid_size, 3), dtype=np.float32
                         )
                         for y in range(len(result)):
                             for x in range(len(result[y])):
                                 if grid_text[y][x] == "0":
                                     cv2.putText(
-                                        fond,
+                                        bg,
                                         "{:d}".format(result[y][x]),
                                         (
                                             (x) * box + margin + 3,
@@ -136,13 +142,15 @@ class Thread(QThread):
                         M = cv2.getPerspectiveTransform(pts2, pts1)
 
                         h, w, c = frame.shape
-                        fondP = cv2.warpPerspective(fond, M, (w, h))
-                        img2gray = cv2.cvtColor(fondP, cv2.COLOR_BGR2GRAY)
-                        ret, mask = cv2.threshold(img2gray, 10, 255, cv2.THRESH_BINARY)
+                        processed_bg = cv2.warpPerspective(bg, M, (w, h))
+                        img2gray = cv2.cvtColor(
+                            processed_bg, cv2.COLOR_BGR2GRAY)
+                        ret, mask = cv2.threshold(
+                            img2gray, 10, 255, cv2.THRESH_BINARY)
                         mask = mask.astype("uint8")
                         mask_inv = cv2.bitwise_not(mask)
                         img1_bg = cv2.bitwise_and(frame, frame, mask=mask_inv)
-                        img2_fg = cv2.bitwise_and(fondP, fondP, mask=mask).astype(
+                        img2_fg = cv2.bitwise_and(processed_bg, processed_bg, mask=mask).astype(
                             "uint8"
                         )
                         dst = cv2.add(img1_bg, img2_fg)
@@ -161,7 +169,12 @@ class Thread(QThread):
         cap.release()
         cv2.destroyAllWindows()
 
-    def show_frame(self, frame):        
+    def show_frame(self, frame):
+        """Display frames similar to cv2.imshow().
+
+        Args:
+            frame: The image to be displayed.
+        """
         rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         h, w, ch = rgbImage.shape
         bytesPerLine = ch * w
@@ -182,6 +195,11 @@ class Ui_RealTime(QtWidgets.QWidget):
 
     @pyqtSlot(QImage)
     def setImage(self, image):
+        """Sets the image on the label.
+
+        Args:
+            image: The image to be displayed.
+        """
         global running
 
         self.feed.setPixmap(QPixmap.fromImage(image))
@@ -190,18 +208,21 @@ class Ui_RealTime(QtWidgets.QWidget):
             running = False
 
     def initUI(self):
+        """Initializing function for Ui_RealTime class."""
         self.resize(700, 700)
         self.setMinimumSize(QtCore.QSize(700, 700))
         self.setStyleSheet("background-color: rgb(0, 0, 0);")
         self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setObjectName("gridLayout")
 
+        # feed label ################################################
         self.feed = QtWidgets.QLabel(self)
         self.feed.setMinimumSize(QtCore.QSize(680, 680))
         self.feed.setScaledContents(True)
         self.feed.setObjectName("feed")
         self.gridLayout.addWidget(self.feed, 0, 0, 1, 1)
-        
+
+        # QThread object ############################################
         if running:
             self.th = Thread(self)
             self.th.changePixmap.connect(self.setImage)

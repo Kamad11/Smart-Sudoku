@@ -1,3 +1,4 @@
+"""Module containing random generator mode gui."""
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sudukoSolver
 from copy import deepcopy
@@ -23,17 +24,17 @@ QSpinBox::hover { background-color: #F76B8A; }"""
 
 class Ui_RandomGenerator(object):
     def setupUi(self, RandomGenerator):
-        
         RandomGenerator.setObjectName("RandomGenerator")
         RandomGenerator.resize(700, 700)
         RandomGenerator.setMinimumSize(QtCore.QSize(700, 700))
         RandomGenerator.setStyleSheet("background-color: #ffffff;")
-        
+
         self.main_layout = QtWidgets.QGridLayout(RandomGenerator)
         self.main_layout.setContentsMargins(62, 10, 62, 10)
         self.main_layout.setSpacing(5)
         self.main_layout.setObjectName("main_layout")
-        
+
+        # option buttons ##################################################
         self.options = QtWidgets.QWidget(RandomGenerator)
         self.options.setMinimumSize(QtCore.QSize(0, 60))
         self.options.setStyleSheet(style_sheet_1)
@@ -42,26 +43,30 @@ class Ui_RandomGenerator(object):
         font.setPointSize(13)
         self.options_layout = QtWidgets.QGridLayout(self.options)
         self.options_layout.setObjectName("options_layout")
-        
+
+        # # reset #####
         self.reset_button = QtWidgets.QPushButton(self.options)
         self.reset_button.setMinimumSize(QtCore.QSize(0, 50))
         self.reset_button.setFont(font)
         self.reset_button.setObjectName("reset_button")
         self.options_layout.addWidget(self.reset_button, 0, 0, 1, 1)
-        
+
+        # # see solution #####
         self.solution_button = QtWidgets.QPushButton(self.options)
         self.solution_button.setMinimumSize(QtCore.QSize(0, 50))
         self.solution_button.setFont(font)
         self.solution_button.setObjectName("solution_button")
         self.options_layout.addWidget(self.solution_button, 0, 1, 1, 1)
 
+        # # check solution #####
         self.check_solution_button = QtWidgets.QPushButton(self.options)
         self.check_solution_button.setMinimumSize(QtCore.QSize(0, 50))
         self.check_solution_button.setFont(font)
         self.check_solution_button.setObjectName("check_solution_button")
         self.options_layout.addWidget(self.check_solution_button, 0, 2, 1, 1)
         self.main_layout.addWidget(self.options, 1, 0, 1, 1)
-        
+
+        # board widget #####################################################
         self.sudoku_board = QtWidgets.QWidget(RandomGenerator)
         self.sudoku_board.setMinimumSize(QtCore.QSize(576, 576))
         self.sudoku_board.setStyleSheet(style_sheet_2)
@@ -71,7 +76,7 @@ class Ui_RandomGenerator(object):
         self.sudoku_board_layout.setSpacing(10)
         self.sudoku_board_layout.setObjectName("sudoku_board_layout")
 
-        # horizontal lines
+        # # horizontal lines #####
         self.hl1 = QtWidgets.QFrame(self.sudoku_board)
         self.hl1.setFrameShadow(QtWidgets.QFrame.Plain)
         self.hl1.setLineWidth(5)
@@ -85,14 +90,14 @@ class Ui_RandomGenerator(object):
         self.hl2.setFrameShape(QtWidgets.QFrame.HLine)
         self.hl2.setObjectName("hl2")
         self.sudoku_board_layout.addWidget(self.hl2, 3, 4, 1, 3)
-       
+
         self.hl3 = QtWidgets.QFrame(self.sudoku_board)
         self.hl3.setFrameShadow(QtWidgets.QFrame.Plain)
         self.hl3.setLineWidth(5)
         self.hl3.setFrameShape(QtWidgets.QFrame.HLine)
         self.hl3.setObjectName("hl3")
         self.sudoku_board_layout.addWidget(self.hl3, 3, 8, 1, 3)
-        
+
         self.hl4 = QtWidgets.QFrame(self.sudoku_board)
         self.hl4.setFrameShadow(QtWidgets.QFrame.Plain)
         self.hl4.setLineWidth(5)
@@ -114,14 +119,14 @@ class Ui_RandomGenerator(object):
         self.hl6.setObjectName("hl6")
         self.sudoku_board_layout.addWidget(self.hl6, 7, 8, 1, 3)
 
-        # vertical lines
+        # # vertical lines #####
         self.vl1 = QtWidgets.QFrame(self.sudoku_board)
         self.vl1.setFrameShadow(QtWidgets.QFrame.Plain)
         self.vl1.setLineWidth(5)
         self.vl1.setFrameShape(QtWidgets.QFrame.VLine)
         self.vl1.setObjectName("vl1")
         self.sudoku_board_layout.addWidget(self.vl1, 0, 3, 3, 1)
-        
+
         self.vl2 = QtWidgets.QFrame(self.sudoku_board)
         self.vl2.setFrameShadow(QtWidgets.QFrame.Plain)
         self.vl2.setLineWidth(5)
@@ -149,7 +154,7 @@ class Ui_RandomGenerator(object):
         self.vl5.setFrameShape(QtWidgets.QFrame.VLine)
         self.vl5.setObjectName("vl5")
         self.sudoku_board_layout.addWidget(self.vl5, 8, 3, 3, 1)
-        
+
         self.vl6 = QtWidgets.QFrame(self.sudoku_board)
         self.vl6.setFrameShadow(QtWidgets.QFrame.Plain)
         self.vl6.setLineWidth(5)
@@ -157,7 +162,7 @@ class Ui_RandomGenerator(object):
         self.vl6.setObjectName("vl6")
         self.sudoku_board_layout.addWidget(self.vl6, 8, 7, 3, 1)
 
-        # boxes        
+        # # boxes #####
         self.b1 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b1.setMinimumSize(QtCore.QSize(50, 50))
         self.b1.setAlignment(QtCore.Qt.AlignCenter)
@@ -166,7 +171,7 @@ class Ui_RandomGenerator(object):
         self.b1.setMaximum(9)
         self.b1.setObjectName("b1")
         self.sudoku_board_layout.addWidget(self.b1, 0, 0, 1, 1)
-        
+
         self.b2 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b2.setMinimumSize(QtCore.QSize(50, 50))
         self.b2.setAlignment(QtCore.Qt.AlignCenter)
@@ -202,7 +207,7 @@ class Ui_RandomGenerator(object):
         self.b5.setMaximum(9)
         self.b5.setObjectName("b5")
         self.sudoku_board_layout.addWidget(self.b5, 0, 5, 1, 1)
-        
+
         self.b6 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b6.setMinimumSize(QtCore.QSize(50, 50))
         self.b6.setAlignment(QtCore.Qt.AlignCenter)
@@ -211,7 +216,7 @@ class Ui_RandomGenerator(object):
         self.b6.setMaximum(9)
         self.b6.setObjectName("b6")
         self.sudoku_board_layout.addWidget(self.b6, 0, 6, 1, 1)
-        
+
         self.b7 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b7.setMinimumSize(QtCore.QSize(50, 50))
         self.b7.setAlignment(QtCore.Qt.AlignCenter)
@@ -220,7 +225,7 @@ class Ui_RandomGenerator(object):
         self.b7.setMaximum(9)
         self.b7.setObjectName("b7")
         self.sudoku_board_layout.addWidget(self.b7, 0, 8, 1, 1)
-        
+
         self.b8 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b8.setMinimumSize(QtCore.QSize(50, 50))
         self.b8.setAlignment(QtCore.Qt.AlignCenter)
@@ -229,7 +234,7 @@ class Ui_RandomGenerator(object):
         self.b8.setMaximum(9)
         self.b8.setObjectName("b8")
         self.sudoku_board_layout.addWidget(self.b8, 0, 9, 1, 1)
-        
+
         self.b9 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b9.setMinimumSize(QtCore.QSize(50, 50))
         self.b9.setAlignment(QtCore.Qt.AlignCenter)
@@ -256,7 +261,7 @@ class Ui_RandomGenerator(object):
         self.b11.setMaximum(9)
         self.b11.setObjectName("b11")
         self.sudoku_board_layout.addWidget(self.b11, 1, 1, 1, 1)
-        
+
         self.b12 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b12.setMinimumSize(QtCore.QSize(50, 50))
         self.b12.setAlignment(QtCore.Qt.AlignCenter)
@@ -274,7 +279,7 @@ class Ui_RandomGenerator(object):
         self.b13.setMaximum(9)
         self.b13.setObjectName("b13")
         self.sudoku_board_layout.addWidget(self.b13, 1, 4, 1, 1)
-        
+
         self.b14 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b14.setMinimumSize(QtCore.QSize(50, 50))
         self.b14.setAlignment(QtCore.Qt.AlignCenter)
@@ -328,7 +333,7 @@ class Ui_RandomGenerator(object):
         self.b19.setMaximum(9)
         self.b19.setObjectName("b19")
         self.sudoku_board_layout.addWidget(self.b19, 2, 0, 1, 1)
-        
+
         self.b20 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b20.setMinimumSize(QtCore.QSize(50, 50))
         self.b20.setAlignment(QtCore.Qt.AlignCenter)
@@ -337,7 +342,7 @@ class Ui_RandomGenerator(object):
         self.b20.setMaximum(9)
         self.b20.setObjectName("b20")
         self.sudoku_board_layout.addWidget(self.b20, 2, 1, 1, 1)
-        
+
         self.b21 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b21.setMinimumSize(QtCore.QSize(50, 50))
         self.b21.setAlignment(QtCore.Qt.AlignCenter)
@@ -409,7 +414,7 @@ class Ui_RandomGenerator(object):
         self.b28.setMaximum(9)
         self.b28.setObjectName("b28")
         self.sudoku_board_layout.addWidget(self.b28, 4, 0, 1, 1)
-        
+
         self.b29 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b29.setMinimumSize(QtCore.QSize(50, 50))
         self.b29.setAlignment(QtCore.Qt.AlignCenter)
@@ -445,7 +450,7 @@ class Ui_RandomGenerator(object):
         self.b32.setMaximum(9)
         self.b32.setObjectName("b32")
         self.sudoku_board_layout.addWidget(self.b32, 4, 5, 1, 1)
-        
+
         self.b33 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b33.setMinimumSize(QtCore.QSize(50, 50))
         self.b33.setAlignment(QtCore.Qt.AlignCenter)
@@ -526,7 +531,7 @@ class Ui_RandomGenerator(object):
         self.b41.setMaximum(9)
         self.b41.setObjectName("b41")
         self.sudoku_board_layout.addWidget(self.b41, 5, 5, 1, 1)
-        
+
         self.b42 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b42.setMinimumSize(QtCore.QSize(50, 50))
         self.b42.setAlignment(QtCore.Qt.AlignCenter)
@@ -535,7 +540,7 @@ class Ui_RandomGenerator(object):
         self.b42.setMaximum(9)
         self.b42.setObjectName("b42")
         self.sudoku_board_layout.addWidget(self.b42, 5, 6, 1, 1)
-        
+
         self.b43 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b43.setMinimumSize(QtCore.QSize(50, 50))
         self.b43.setAlignment(QtCore.Qt.AlignCenter)
@@ -743,7 +748,7 @@ class Ui_RandomGenerator(object):
         self.b65.setMaximum(9)
         self.b65.setObjectName("b65")
         self.sudoku_board_layout.addWidget(self.b65, 9, 1, 1, 1)
-        
+
         self.b66 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b66.setMinimumSize(QtCore.QSize(50, 50))
         self.b66.setAlignment(QtCore.Qt.AlignCenter)
@@ -779,7 +784,7 @@ class Ui_RandomGenerator(object):
         self.b69.setMaximum(9)
         self.b69.setObjectName("b69")
         self.sudoku_board_layout.addWidget(self.b69, 9, 6, 1, 1)
-        
+
         self.b70 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b70.setMinimumSize(QtCore.QSize(50, 50))
         self.b70.setAlignment(QtCore.Qt.AlignCenter)
@@ -806,7 +811,7 @@ class Ui_RandomGenerator(object):
         self.b72.setMaximum(9)
         self.b72.setObjectName("b72")
         self.sudoku_board_layout.addWidget(self.b72, 9, 10, 1, 1)
-        
+
         self.b73 = QtWidgets.QSpinBox(self.sudoku_board)
         self.b73.setMinimumSize(QtCore.QSize(50, 50))
         self.b73.setAlignment(QtCore.Qt.AlignCenter)
@@ -889,20 +894,28 @@ class Ui_RandomGenerator(object):
         self.sudoku_board_layout.addWidget(self.b81, 10, 10, 1, 1)
 
         # global variables ############################################################
-
         self.start_board = [[0 for x in range(9)] for y in range(9)]
         self.solution = [[0 for x in range(9)] for y in range(9)]
 
         self.board = [
-            [self.b1, self.b2, self.b3, self.b4, self.b5, self.b6, self.b7, self.b8, self.b9],
-            [self.b10, self.b11, self.b12, self.b13, self.b14, self.b15, self.b16, self.b17, self.b18],
-            [self.b19, self.b20, self.b21, self.b22, self.b23, self.b24, self.b25, self.b26, self.b27],
-            [self.b28, self.b29, self.b30, self.b31, self.b32, self.b33, self.b34, self.b35, self.b36],
-            [self.b37, self.b38, self.b39, self.b40, self.b41, self.b42, self.b43, self.b44, self.b45],
-            [self.b46, self.b47, self.b48, self.b49, self.b50, self.b51, self.b52, self.b53, self.b54],
-            [self.b55, self.b56, self.b57, self.b58, self.b59, self.b60, self.b61, self.b62, self.b63],
-            [self.b64, self.b65, self.b66, self.b67, self.b68, self.b69, self.b70, self.b71, self.b72],
-            [self.b73, self.b74, self.b75, self.b76, self.b77, self.b78, self.b79, self.b80, self.b81]
+            [self.b1, self.b2, self.b3, self.b4, self.b5,
+                self.b6, self.b7, self.b8, self.b9],
+            [self.b10, self.b11, self.b12, self.b13, self.b14,
+                self.b15, self.b16, self.b17, self.b18],
+            [self.b19, self.b20, self.b21, self.b22, self.b23,
+                self.b24, self.b25, self.b26, self.b27],
+            [self.b28, self.b29, self.b30, self.b31, self.b32,
+                self.b33, self.b34, self.b35, self.b36],
+            [self.b37, self.b38, self.b39, self.b40, self.b41,
+                self.b42, self.b43, self.b44, self.b45],
+            [self.b46, self.b47, self.b48, self.b49, self.b50,
+                self.b51, self.b52, self.b53, self.b54],
+            [self.b55, self.b56, self.b57, self.b58, self.b59,
+                self.b60, self.b61, self.b62, self.b63],
+            [self.b64, self.b65, self.b66, self.b67, self.b68,
+                self.b69, self.b70, self.b71, self.b72],
+            [self.b73, self.b74, self.b75, self.b76, self.b77,
+                self.b78, self.b79, self.b80, self.b81]
         ]
 
         self.retranslateUi(RandomGenerator)
@@ -916,13 +929,17 @@ class Ui_RandomGenerator(object):
         self.reset_button.setText(_translate("RandomGenerator", "Reset Game"))
         self.reset_button.clicked.connect(lambda: self.reset_board())
 
-        self.solution_button.setText(_translate("RandomGenerator", "Show Solution"))
+        self.solution_button.setText(_translate(
+            "RandomGenerator", "Show Solution"))
         self.solution_button.clicked.connect(lambda: self.solve_board())
 
-        self.check_solution_button.setText(_translate("RandomGenerator", "Check Solution"))
-        self.check_solution_button.clicked.connect(lambda: self.check_solution())
-    
+        self.check_solution_button.setText(
+            _translate("RandomGenerator", "Check Solution"))
+        self.check_solution_button.clicked.connect(
+            lambda: self.check_solution())
+
     def generate_board(self):
+        """Generate a random solvable board."""
         for i in range(9):
             for j in range(9):
                 self.start_board[i][j] = 0
@@ -946,22 +963,15 @@ class Ui_RandomGenerator(object):
                     self.board[i][j].setDisabled(True)
 
     def reset_board(self):
+        """Reset to start board."""
         for i in range(9):
             for j in range(9):
                 self.board[i][j].setValue(self.start_board[i][j])
                 if self.board[i][j].value() != 0:
                     self.board[i][j].setDisabled(True)
 
-    def solve_board(self):
-        self.check_solution_button.setDisabled(True)
-        self.reset_button.setDisabled(True)
-        self.solution_button.setDisabled(True)
-        for i in range(9):
-            for j in range(9):
-                self.board[i][j].setValue(self.solution[i][j])
-                self.board[i][j].setDisabled(True)
-    
     def check_solution(self):
+        """Check user's solution."""
         for i in range(9):
             for j in range(9):
                 if self.board[i][j].value() != self.solution[i][j]:
@@ -969,3 +979,13 @@ class Ui_RandomGenerator(object):
                     return
         self.check_solution_button.setText("You've solved it!")
         self.solve_board()
+
+    def solve_board(self):
+        """Solve the board."""
+        self.check_solution_button.setDisabled(True)
+        self.reset_button.setDisabled(True)
+        self.solution_button.setDisabled(True)
+        for i in range(9):
+            for j in range(9):
+                self.board[i][j].setValue(self.solution[i][j])
+                self.board[i][j].setDisabled(True)

@@ -1,4 +1,5 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+"""Instructions for the game."""
+from PyQt5 import QtCore, QtWidgets
 
 html_instructions = """<html>
 <head/>
@@ -62,7 +63,8 @@ class Ui_Instructions(object):
         self.text_layout.setObjectName("text_layout")
 
         self.text = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.text.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.text.setAlignment(QtCore.Qt.AlignLeading |
+                               QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.text.setWordWrap(True)
         self.text.setObjectName("text")
         self.text_layout.addWidget(self.text, 0, 0, 1, 1)

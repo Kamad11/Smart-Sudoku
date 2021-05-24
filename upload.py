@@ -1,3 +1,4 @@
+"""Module containing upload mode gui."""
 from PyQt5 import QtCore, QtGui, QtWidgets
 import cv2
 import numpy as np
@@ -37,8 +38,8 @@ class Ui_UploadImage(object):
         self.tab_widget.setUsesScrollButtons(False)
         self.tab_widget.setObjectName("tab_widget")
 
+        # unsolved image
         self.unsolved_tab = QtWidgets.QWidget()
-        self.unsolved_tab.setStyleSheet("")
         self.unsolved_tab.setObjectName("unsolved_tab")
         self.unsolved_layout = QtWidgets.QGridLayout(self.unsolved_tab)
         self.unsolved_layout.setObjectName("unsolved_layout")
@@ -50,6 +51,7 @@ class Ui_UploadImage(object):
         self.unsolved_layout.addWidget(self.unsolved_image, 0, 0, 1, 1)
         self.tab_widget.addTab(self.unsolved_tab, "")
 
+        # solved image
         self.solved_tab = QtWidgets.QWidget()
         self.solved_tab.setObjectName("solved_tab")
         self.solved_layout = QtWidgets.QGridLayout(self.solved_tab)
@@ -69,11 +71,14 @@ class Ui_UploadImage(object):
     def retranslateUi(self, UploadImage):
         _translate = QtCore.QCoreApplication.translate
 
-        self.tab_widget.setTabText(self.tab_widget.indexOf(self.unsolved_tab), _translate("UploadImage", "Unsolved"))
-        self.tab_widget.setTabText(self.tab_widget.indexOf(self.solved_tab), _translate("UploadImage", "Solution"))
-        self.solved_image.setText(_translate("UploadImage", "Solving Sudoku..."))
+        self.tab_widget.setTabText(self.tab_widget.indexOf(
+            self.unsolved_tab), _translate("UploadImage", "Unsolved"))
+        self.tab_widget.setTabText(self.tab_widget.indexOf(
+            self.solved_tab), _translate("UploadImage", "Solution"))
+        self.solved_image.setText(_translate(
+            "UploadImage", "Solving Sudoku..."))
         self.sudoku_main()
-    
+
     def sudoku_main(self):
         heightImg = 450
         widthImg = 450
@@ -94,11 +99,13 @@ class Ui_UploadImage(object):
 
             pts1 = np.float32(biggest)
             pts2 = np.float32([[0, 0], [widthImg, 0], [0, heightImg], [
-                            widthImg, heightImg]])
+                widthImg, heightImg]])
 
             matrix = cv2.getPerspectiveTransform(pts1, pts2)  # GER
-            self.imgWarpColored = cv2.warpPerspective(self.img, matrix, (widthImg, heightImg))
-            self.imgWarpColored = cv2.cvtColor(self.imgWarpColored, cv2.COLOR_BGR2GRAY)
+            self.imgWarpColored = cv2.warpPerspective(
+                self.img, matrix, (widthImg, heightImg))
+            self.imgWarpColored = cv2.cvtColor(
+                self.imgWarpColored, cv2.COLOR_BGR2GRAY)
 
             # #### 3. split the image and find digits ##############################################
             self.imgSolvedDigits = np.zeros((heightImg, widthImg, 3), np.uint8)
@@ -125,16 +132,20 @@ class Ui_UploadImage(object):
                 for item in sublist:
                     flatList.append(item)
             solvedNumbers = flatList*posArray
-            self.imgSolvedDigits = utils.display_numbers(self.imgSolvedDigits, solvedNumbers)
+            self.imgSolvedDigits = utils.display_numbers(
+                self.imgSolvedDigits, solvedNumbers)
 
             # overlay solution
             # warp
             pts2 = np.float32(biggest)
-            pts1 = np.float32([[0, 0], [widthImg, 0], [0, heightImg], [widthImg, heightImg]])
+            pts1 = np.float32(
+                [[0, 0], [widthImg, 0], [0, heightImg], [widthImg, heightImg]])
             matrix = cv2.getPerspectiveTransform(pts1, pts2)
             self.imgInvWarpColored = self.img.copy()
-            self.imgInvWarpColored = cv2.warpPerspective(self.imgSolvedDigits, matrix, (widthImg, heightImg))
-            self.inv_perspective = cv2.addWeighted(self.imgInvWarpColored, 1, self.img, 0.5, 1)
+            self.imgInvWarpColored = cv2.warpPerspective(
+                self.imgSolvedDigits, matrix, (widthImg, heightImg))
+            self.inv_perspective = cv2.addWeighted(
+                self.imgInvWarpColored, 1, self.img, 0.5, 1)
             cv2.imwrite("solved.jpg", self.inv_perspective)
 
             self.solved_image.setPixmap(QtGui.QPixmap("solved.jpg"))

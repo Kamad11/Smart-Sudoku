@@ -1,61 +1,68 @@
-def sudoku(f):
+"""Real-Time solution function."""
+def sudoku(board):
 
-    def cp(q, s):
-        l = set(s[q[0]])
-        l |= {s[i][q[1]] for i in range(9)}
-        k = q[0] // 3, q[1] // 3
+    def cell_pos(matrix, sol):
+        row = set(sol[matrix[0]])
+        row |= {sol[i][matrix[1]] for i in range(9)}
+        k = matrix[0] // 3, matrix[1] // 3
+
         for i in range(3):
-            l |= set(s[k[0] * 3 + i][k[1] * 3:(k[1] + 1) * 3])
-        return set(range(1, 10)) - l
+            row |= set(sol[k[0] * 3 + i][k[1] * 3:(k[1] + 1) * 3])
 
-    def ec(l):
-        q = set(l) - {0}
-        for c in q:
-            if l.count(c) != 1:
+        return set(range(1, 10)) - row
+
+    def is_invalid(row):
+        matrix = set(row) - {0}
+        for col in matrix:
+            if row.count(col) != 1:
                 return True
         return False
 
-    s = []
-    t = []
-    for nl, l in enumerate(f):
+    sol = []
+    empty_pos = []
+    for nl, l in enumerate(board):
         try:
             n = list(map(int, l))
         except:
             return
         if len(n) != 9:
             return
-        t += [[nl, i] for i in range(9) if n[i] == 0]
-        s.append(n)
+        empty_pos += [[nl, i] for i in range(9) if n[i] == 0]
+        sol.append(n)
+
     if nl != 8:
         return
 
-    for l in range(9):
-        if ec(s[l]):
+    for row in range(9):
+        if is_invalid(sol[row]):
             return
-    for c in range(9):
-        k = [s[l][c] for l in range(9)]
-        if ec(k):
+
+    for col in range(9):
+        k = [sol[row][col] for row in range(9)]
+        if is_invalid(k):
             return
-    for l in range(3):
-        for c in range(3):
-            q = []
+
+    for row in range(3):
+        for col in range(3):
+            matrix = []
             for i in range(3):
-                q += s[l * 3 + i][c * 3:(c + 1) * 3]
-            if ec(q):
+                matrix += sol[row * 3 + i][col * 3:(col + 1) * 3]
+            if is_invalid(matrix):
                 return
 
-    p = [[] for i in t]
-    cr = 0
+    pos = [[] for i in empty_pos]
+    cell_row = 0
 
-    while cr < len(t):
-        p[cr] = cp(t[cr], s)
+    while cell_row < len(empty_pos):
+        pos[cell_row] = cell_pos(empty_pos[cell_row], sol)
         try:
-            while not p[cr]:
-                s[t[cr][0]][t[cr][1]] = 0
-                cr -= 1
+            while not pos[cell_row]:
+                sol[empty_pos[cell_row][0]][empty_pos[cell_row][1]] = 0
+                cell_row -= 1
         except:
             return
-        s[t[cr][0]][t[cr][1]] = p[cr].pop()
-        cr += 1
 
-    return(s)
+        sol[empty_pos[cell_row][0]][empty_pos[cell_row][1]] = pos[cell_row].pop()
+        cell_row += 1
+
+    return(sol)
