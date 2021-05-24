@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>About</class>
+ <widget class="QWidget" name="About">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>700</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>About</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);
+font: 12pt &quot;Consolas&quot;;</string>
+  </property>
+  <layout class="QGridLayout" name="main_layout">
+   <item row="0" column="0" colspan="3">
+    <widget class="QLabel" name="logo">
+     <property name="minimumSize">
+      <size>
+       <width>300</width>
+       <height>300</height>
+      </size>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../Resources/logo_transparent.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="IK">
+     <property name="minimumSize">
+      <size>
+       <width>210</width>
+       <height>210</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>&lt;h2&gt;Ishani Kathuria&lt;/h2&gt;
+&lt;h3&gt;&lt;a href=&quot;https://www.linkedin.com/in/ishani-kathuria/&quot;&gt;LinkedIn&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a href=&quot;https://github.com/ikathuria&quot;&gt;GitHub&lt;/a&gt;&lt;/h3&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="authors">
+     <property name="text">
+      <string>&lt;h1&gt;Authors&lt;/h1&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QLabel" name="KS">
+     <property name="minimumSize">
+      <size>
+       <width>210</width>
+       <height>210</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>&lt;h2&gt;Kamad Saxena&lt;/h2&gt;
+&lt;h3&gt;&lt;a href=&quot;https://www.linkedin.com/in/kamad-saxena/&quot;&gt;LinkedIn&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a href=&quot;https://github.com/kamad11&quot;&gt;GitHub&lt;/a&gt;&lt;/h3&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3">
+    <widget class="QLabel" name="repo">
+     <property name="text">
+      <string>&lt;h4&gt;The Project: &lt;a href=&quot;https://github.com/Kamad11/Smart_Sudoku&quot;&gt;https://github.com/Kamad11/Smart_Sudoku&lt;/a&gt;&lt;h4&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
