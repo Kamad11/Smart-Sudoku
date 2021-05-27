@@ -1,5 +1,7 @@
-<img align="center" src="Resources\logo_transparent.png" height=150px />
-<img align="center" src="Resources\readme\sae.png" height=150px />
+<div align="center">
+<img src="Resources\logo_transparent.png" height=150px /><br>
+<img align="center" src="Resources\readme\sae.png" width=600px />
+</div>
 
 An innovative approach to solving the simple sudoku game using artificial intelligence model, image processing, and a basic backtracking algorithm. The visualization of the project is done using a GUI application made with PyQt5. The application has 3 different modes for the user to choose from.
 
